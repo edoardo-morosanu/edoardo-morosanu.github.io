@@ -1,52 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edoardo A. Morosanu</title>
     <link rel="stylesheet" href="css/style.css" type="text/css" />
     <script>
-      const routes = {
-        "/": "pages/home.html",
-        "/home": "pages/home.html",
-        "/about": "pages/about.html",
-        "/projects": "pages/projects.html",
-      };
+        // Define your routes
+        const routes = {
+            "/": "pages/home.html",
+            "/home": "pages/home.html",
+            "/about": "pages/about.html",
+            "/projects": "pages/projects.html",
+        };
 
-      async function loadContent(url) {
-        const path = url.split("?")[0];
-        const page = routes[path] || "404.html";
-        try {
-          const response = await fetch(page);
-          const html = await response.text();
-          const content = new DOMParser().parseFromString(html, "text/html");
-          document.title = content.title;
-          document.body.innerHTML = content.body.innerHTML;
-        } catch (error) {
-          console.error("Error loading page:", error);
-          document.body.innerHTML = "<h1>Error loading page</h1>";
+        // Function to load content based on the URL
+        async function loadContent(url) {
+            const path = url.split("?")[0]; // Remove query parameters
+            const page = routes[path]; // Updated fallback path
+            console.log(`Attempting to load: ${page}`); // Debugging log
+
+            try {
+                const response = await fetch(page);
+
+                // Check if the response is OK (status code 200-299)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const html = await response.text();
+                const content = new DOMParser().parseFromString(html, "text/html");
+                document.title = content.querySelector('title')?.innerText || 'Default Title';
+                document.body.innerHTML = content.body.innerHTML;
+            } catch (error) {
+                console.error("Error loading page:", error);
+                document.body.innerHTML = "<h1>Error loading page</h1>";
+            }
         }
-      }
 
-      function navigate(event) {
-        const href = event.target.getAttribute("href");
-        if (href && href.startsWith("/")) {
-          event.preventDefault();
-          window.history.pushState({}, "", href);
-          loadContent(href);
+        // Handle navigation by intercepting click events on links
+        function navigate(event) {
+            // Only handle left-clicks without modifier keys
+            if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey) {
+                return;
+            }
+
+            // Find the closest anchor tag
+            const anchor = event.target.closest('a');
+            if (!anchor) return;
+
+            const href = anchor.getAttribute("href");
+            if (href && href.startsWith("/")) {
+                event.preventDefault();
+                window.history.pushState({}, "", href);
+                loadContent(href);
+            }
         }
-      }
 
-      window.addEventListener("load", () =>
-        loadContent(window.location.pathname)
-      );
+        // Initial content load
+        window.addEventListener("load", () => loadContent(window.location.pathname));
 
-      window.addEventListener("popstate", () =>
-        loadContent(window.location.pathname)
-      );
+        // Handle back and forward navigation
+        window.addEventListener("popstate", () => loadContent(window.location.pathname));
 
-      document.addEventListener("click", navigate);
+        // Intercept all click events in the document
+        document.addEventListener("click", navigate);
     </script>
-  </head>
-  <body></body>
+</head>
+<body>
+    <!-- Navigation Menu -->
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/nonexistent">Nonexistent Page</a></li>
+        </ul>
+    </nav>
+    <!-- Content will be loaded here -->
+</body>
 </html>
