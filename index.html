@@ -3,79 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+
     <title>Edoardo A. Morosanu</title>
+
     <link rel="stylesheet" href="css/normalize.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
-    <script>
-      const routes = {
-        "/": "pages/home.html",
-        "/home": "pages/home.html",
-        "/about": "pages/about.html",
-        "/projects": "pages/projects.html",
-      };
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-      async function loadContent(url) {
-        const path = url.split("?")[0];
-        const page = routes[path];
-        console.log(`Attempting to load: ${page}`);
+    <script src="js/router.js" defer></script>
+    <script>
+      const routes = new Map([
+        ["home", "pages/home.html"],
+        ["about", "pages/about.html"],
+        ["projects", "pages/projects.html"],
+      ]);
+
+      async function loadContent(hash) {
+        const path = hash.replace("#", "") || "home";
+        const page = routes.get(path);
 
         try {
+          if (!page) throw new Error("Page not found");
+
           const response = await fetch(page);
-          if (!response.ok) {
+          if (!response.ok)
             throw new Error(`HTTP error! status: ${response.status}`);
-          }
 
           const html = await response.text();
-          const content = new DOMParser().parseFromString(html, "text/html");
-          document.title =
-            content.querySelector("title")?.innerText || "Default Title";
-          document.body.innerHTML = content.body.innerHTML;
+          document.body.innerHTML = new DOMParser().parseFromString(
+            html,
+            "text/html"
+          ).body.innerHTML;
         } catch (error) {
-          console.error("Error loading page:", error);
-          document.body.innerHTML = "<h1>Error loading page</h1>";
+          console.error("Error:", error);
+          document.body.innerHTML = `<h1>${error.message}</h1>`;
         }
       }
 
-      function navigate(event) {
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey
-        ) {
-          return;
-        }
+      window.addEventListener("hashchange", () => {
+        loadContent(window.location.hash);
+      });
 
-        const anchor = event.target.closest("a");
-        if (!anchor) return;
-
-        const href = anchor.getAttribute("href");
-        if (href && href.startsWith("/")) {
-          event.preventDefault();
-          window.history.pushState({}, "", href);
-          loadContent(href);
-        }
-      }
-
-      window.addEventListener("load", () =>
-        loadContent(window.location.pathname)
-      );
-
-      window.addEventListener("popstate", () =>
-        loadContent(window.location.pathname)
-      );
-
-      document.addEventListener("click", navigate);
+      window.addEventListener("load", () => {
+        loadContent(window.location.hash);
+      });
     </script>
   </head>
   <body>
     <nav>
       <ul>
-        <li><a href="/home">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/projects">Projects</a></li>
-        <li><a href="/nonexistent">Nonexistent Page</a></li>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#nonexistent">Nonexistent Page</a></li>
       </ul>
     </nav>
   </body>
