@@ -12,14 +12,16 @@
     <link rel="stylesheet" href="css/style.css" type="text/css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="pages/home.html" as="fetch" crossorigin />
 
-    <script src="js/router.js" defer></script>
     <script>
       const routes = new Map([
         ["home", "pages/home.html"],
-        ["about", "pages/about.html"],
         ["projects", "pages/projects.html"],
+        ["about", "pages/about.html"],
       ]);
+
+      const pageCache = new Map();
 
       async function loadContent(hash) {
         const path = hash.replace("#", "") || "home";
@@ -28,18 +30,31 @@
         try {
           if (!page) throw new Error("Page not found");
 
+          // Show loading indicator
+          document.body.classList.add("loading");
+
+          // Check cache first
+          if (pageCache.has(page)) {
+            document.body.innerHTML = pageCache.get(page);
+            return;
+          }
+
           const response = await fetch(page);
           if (!response.ok)
             throw new Error(`HTTP error! status: ${response.status}`);
 
           const html = await response.text();
-          document.body.innerHTML = new DOMParser().parseFromString(
-            html,
-            "text/html"
-          ).body.innerHTML;
+          const parsedHtml = new DOMParser().parseFromString(html, "text/html")
+            .body.innerHTML;
+
+          // Cache the parsed HTML
+          pageCache.set(page, parsedHtml);
+          document.body.innerHTML = parsedHtml;
         } catch (error) {
           console.error("Error:", error);
           document.body.innerHTML = `<h1>${error.message}</h1>`;
+        } finally {
+          document.body.classList.remove("loading");
         }
       }
 
@@ -52,14 +67,5 @@
       });
     </script>
   </head>
-  <body>
-    <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#nonexistent">Nonexistent Page</a></li>
-      </ul>
-    </nav>
-  </body>
+  <body></body>
 </html>

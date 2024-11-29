@@ -20,8 +20,6 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  will-change: transform;
-  transform: translateZ(0);
 }
 
 .header {
@@ -63,6 +61,7 @@ body {
 .menu a:hover {
   text-decoration: underline;
   color: #67a2c9;
+  will-change: transform;
 }
 
 .content {
@@ -131,6 +130,11 @@ a:hover {
 
 .content.home h1 {
   margin-bottom: 10px;
+}
+
+.loading {
+  opacity: 0.7;
+  transition: opacity 0.2s;
 }
 
 @media (max-width: 768px) {
