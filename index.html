@@ -3,69 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
-    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta
+      name="description"
+      content="Personal website of Edoardo A. Morosanu - Software Developer"
+    />
 
     <title>Edoardo A. Morosanu</title>
 
     <link rel="stylesheet" href="css/normalize.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="pages/home.html" as="fetch" crossorigin />
+    <meta name="color-scheme" content="dark light" />
 
-    <script>
-      const routes = new Map([
-        ["home", "pages/home.html"],
-        ["projects", "pages/projects.html"],
-        ["about", "pages/about.html"],
-      ]);
-
-      const pageCache = new Map();
-
-      async function loadContent(hash) {
-        const path = hash.replace("#", "") || "home";
-        const page = routes.get(path);
-
-        try {
-          if (!page) throw new Error("Page not found");
-
-          // Show loading indicator
-          document.body.classList.add("loading");
-
-          // Check cache first
-          if (pageCache.has(page)) {
-            document.body.innerHTML = pageCache.get(page);
-            return;
-          }
-
-          const response = await fetch(page);
-          if (!response.ok)
-            throw new Error(`HTTP error! status: ${response.status}`);
-
-          const html = await response.text();
-          const parsedHtml = new DOMParser().parseFromString(html, "text/html")
-            .body.innerHTML;
-
-          // Cache the parsed HTML
-          pageCache.set(page, parsedHtml);
-          document.body.innerHTML = parsedHtml;
-        } catch (error) {
-          console.error("Error:", error);
-          document.body.innerHTML = `<h1>${error.message}</h1>`;
-        } finally {
-          document.body.classList.remove("loading");
-        }
-      }
-
-      window.addEventListener("hashchange", () => {
-        loadContent(window.location.hash);
-      });
-
-      window.addEventListener("load", () => {
-        loadContent(window.location.hash);
-      });
-    </script>
+    <script src="js/router.js" defer></script>
   </head>
-  <body></body>
+  <body>
+    <div class="container">
+      <header class="header">
+        <a href="#home" class="logo" aria-label="Home">Edoardo M</a>
+        <nav class="menu" aria-label="Main navigation">
+          <ul role="menubar">
+            <li role="none">
+              <a href="#projects" role="menuitem">Projects</a>
+            </li>
+            <li role="none"><a href="#about" role="menuitem">About</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main id="content">
+        <div id="loading" class="loading-indicator" hidden>Loading...</div>
+      </main>
+
+      <footer class="footer">
+        <div class="divider" role="separator"></div>
+        &copy; 2024 Edoardo A. Morosanu
+      </footer>
+    </div>
+    <script src="js/textAnimation.js" defer></script>
+  </body>
 </html>
