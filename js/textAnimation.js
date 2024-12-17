@@ -1,22 +1,34 @@
 class TextAnimator {
+  static RANDOM_CHARS = "______!<>-\\/[]{}—=+*^?#";
+
   constructor(element, options = {}) {
     this.element = element;
     this.text = element.textContent;
-    this.factor = options.factor || 5;
-    this.delay = options.delay || 0;
-    this.maxMilsec = options.maxMilsec || 120;
-    this.minMilsec = options.minMilsec || 20;
-    this.maxCharsToAnimate = options.maxCharsToAnimate || 25;
-    this.accelerationFactor = options.accelerationFactor || 0.95;
-    this.randomString = "______!<>-\\/[]{}—=+*^?#";
-    this.counter = -1;
     this.originalText = this.text;
+
+    const {
+      factor = 5,
+      delay = 0,
+      maxMilsec = 80,
+      minMilsec = 10,
+      maxCharsToAnimate = 25,
+      accelerationFactor = 0.75,
+    } = options;
+
+    this.factor = factor;
+    this.delay = delay;
+    this.maxMilsec = maxMilsec;
+    this.minMilsec = minMilsec;
+    this.maxCharsToAnimate = maxCharsToAnimate;
+    this.accelerationFactor = accelerationFactor;
+
+    this.counter = -1;
     this.currentDelay = this.maxMilsec;
   }
 
   getRandomChar() {
-    return this.randomString.charAt(
-      Math.floor(Math.random() * this.randomString.length)
+    return TextAnimator.RANDOM_CHARS.charAt(
+      Math.floor(Math.random() * TextAnimator.RANDOM_CHARS.length)
     );
   }
 
@@ -36,17 +48,18 @@ class TextAnimator {
           }
         }
 
+        cipherChars[this.counter] = this.text[this.counter];
+
         if (this.counter + 1 === this.text.length) {
-          cipherChars.splice(this.text.length);
+          cipherChars.length = this.text.length;
         }
 
-        cipherChars[this.counter] = this.text[this.counter];
         this.element.textContent = cipherChars.join("");
 
-        this.currentDelay *= this.accelerationFactor;
-        if (this.currentDelay < this.minMilsec) {
-          this.currentDelay = this.minMilsec;
-        }
+        this.currentDelay = Math.max(
+          this.currentDelay * this.accelerationFactor,
+          this.minMilsec
+        );
 
         this.glitch();
       }
@@ -54,14 +67,16 @@ class TextAnimator {
   }
 
   start() {
-    this.element.textContent = Array(this.text.length)
-      .fill()
+    this.element.textContent = this.text
+      .split("")
       .map(() => this.getRandomChar())
       .join("");
 
     setTimeout(() => this.glitch(), this.delay);
   }
 }
+
+const visitedPages = new Set();
 
 function animateTextElements() {
   const elementsToAnimate = document.querySelectorAll(
@@ -72,26 +87,36 @@ function animateTextElements() {
     const animator = new TextAnimator(element, {
       delay: index * 200,
       maxCharsToAnimate: 15,
-      accelerationFactor: 0.95,
+      accelerationFactor: 0.75,
     });
     animator.start();
   });
 }
 
-const originalLoadContent = window.loadContent;
-window.loadContent = async (hash) => {
-  await originalLoadContent(hash);
-  const elementsToAnimate = document.querySelectorAll(
-    ".project-title, h1, p, span"
-  );
-  for (const element of elementsToAnimate) {
-    if (element.textContent) {
-      element.textContent = element.textContent.trim();
-    }
-  }
-  animateTextElements();
-};
+function wrapLoadContent(originalLoadContent) {
+  return async (hash) => {
+    await originalLoadContent(hash);
 
-document.addEventListener("DOMContentLoaded", () => {
-  animateTextElements();
-});
+    if (!visitedPages.has(hash)) {
+      visitedPages.add(hash);
+
+      const elementsToAnimate = document.querySelectorAll(
+        ".project-title, h1, p, span"
+      );
+
+      for (const element of elementsToAnimate) {
+        if (element.textContent) {
+          element.textContent = element.textContent.trim();
+        }
+      }
+
+      animateTextElements();
+    }
+  };
+}
+
+if (window.loadContent) {
+  window.loadContent = wrapLoadContent(window.loadContent);
+}
+
+document.addEventListener("DOMContentLoaded", animateTextElements);
