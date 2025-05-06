@@ -7,12 +7,12 @@ class TextAnimator {
     this.originalText = this.text;
 
     const {
-      factor = 5,
+      factor = 3,
       delay = 0,
       maxMilsec = 80,
-      minMilsec = 10,
-      maxCharsToAnimate = 25,
-      accelerationFactor = 0.75,
+      minMilsec = 20,
+      maxCharsToAnimate = 2,
+      accelerationFactor = 0.15,
     } = options;
 
     this.factor = factor;
@@ -80,7 +80,7 @@ const visitedPages = new Set();
 
 function animateTextElements() {
   const elementsToAnimate = document.querySelectorAll(
-    ".project-title, h1, p, span"
+    "h1"
   );
 
   elementsToAnimate.forEach((element, index) => {

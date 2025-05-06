@@ -12,6 +12,8 @@
   --text-color: #d4d4d4;
   --accent-color: #67a2c9;
   --secondary-text: #888;
+  --button-bg-color: #fff;
+  --title-color: #a9a9a9;
 
   /* Transitions */
   --transition-fast: 0.2s ease;
@@ -46,6 +48,9 @@ body {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 1; /* Make sure content stays above background */
+  background-color: transparent; /* Make container transparent */
 }
 
 /* Header and navigation */
@@ -55,6 +60,8 @@ body {
   align-items: center;
   padding: var(--spacing-sm);
   border-bottom: 1px solid var(--border-color);
+  position: relative;
+  z-index: 2; /* Ensure these elements are above the background */
 }
 
 .logo {
@@ -82,11 +89,66 @@ body {
 .menu a {
   text-decoration: none;
   color: var(--text-color);
-  transition: color var(--transition-normal);
-  padding: var(--spacing-sm);
-  min-height: 44px;
+  padding: 0 var(--spacing-sm);
+  min-height: 36px;
   display: inline-flex;
   align-items: center;
+  font-size: 24px;
+  background-color: transparent;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  transition-duration: 0.2s;
+  transition-property: color, background-color, box-shadow;
+}
+
+.menu a:before {
+  content: "";
+  transition: all 0.2s;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.menu a:after {
+  content: "";
+  transition: all 0.2s ease-out;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  background-color: var(--button-bg-color);
+  z-index: -1;
+}
+
+.menu a:hover {
+  text-decoration: none;
+  background-color: transparent;
+  color: var(--bg-color);
+  box-shadow: 0.2em 0.2em 0.1em 0 rgba(103, 162, 201, 0.3);
+}
+
+.menu a:hover:before {
+  top: -0.2rem;
+  bottom: -0.2rem;
+  border: solid var(--button-bg-color);
+  border-width: 0.1rem 0;
+}
+
+.menu a:hover:after {
+  width: 100%;
+}
+
+.menu a:active {
+  color: var(--text-color);
+}
+
+.menu a:active:after {
+  background-color: var(--bg-color);
+  opacity: 0.8;
 }
 
 /* Social icons styling */
@@ -112,6 +174,8 @@ body {
   margin-top: var(--spacing-lg);
   padding: 0 var(--spacing-md);
   flex: 1 0 auto;
+  position: relative;
+  z-index: 2; /* Ensure these elements are above the background */
 }
 
 .content.home {
@@ -128,7 +192,7 @@ body {
 h1 {
   font-size: 56px;
   margin-bottom: var(--spacing-lg);
-  color: #a9a9a9;
+  color: var(--title-color);
 }
 
 a {
@@ -137,8 +201,7 @@ a {
 }
 
 /* Common hover effects */
-a:hover,
-.menu a:hover {
+a:hover {
   text-decoration: underline;
   color: var(--accent-color);
 }
@@ -160,10 +223,19 @@ a:hover,
   padding: var(--spacing-md);
   flex-shrink: 0;
   margin-top: auto;
+  position: relative;
+  z-index: 2; /* Ensure these elements are above the background */
 }
 
 .theme-icon {
   filter: invert(var(--icon-invert, 0));
+}
+
+/* Optional: slight background for better readability */
+#content {
+  border-radius: 8px;
+  padding: var(--spacing-md);
+  margin-top: var(--spacing-md);
 }
 
 /* Transitions and animations */
@@ -200,6 +272,9 @@ span {
     --text-color: #1d1e20;
     --accent-color: #2c5d8f;
     --icon-invert: 1;
+    --bg-color-rgb: 255, 255, 255;
+    --button-bg-color: #454138;
+    --title-color: #2a2a2a;
   }
 }
 

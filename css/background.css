@@ -1,0 +1,271 @@
+:root {
+  /* Background animation variables */
+  --shapes-color: rgba(103, 162, 201, 0.15);
+  --grid-color: rgba(103, 162, 201, 0.05);
+  --bg-gradient-1: rgba(29, 30, 32, 0.3);
+  --bg-gradient-2: rgba(40, 41, 44, 0.3);
+  --bg-gradient-3: rgba(50, 51, 54, 0.3);
+  --bg-gradient-4: rgba(45, 46, 49, 0.3);
+  --bg-gradient-5: rgba(35, 36, 39, 0.3);
+  --bg-gradient-6: rgba(25, 26, 29, 0.3);
+  --anim-time: 15s;
+  --anim-mode: cubic-bezier(0.5, 0.6, 0.7, 0.6);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --shapes-color: rgba(44, 93, 143, 0.15);
+    --grid-color: rgba(44, 93, 143, 0.05);
+    --bg-gradient-1: rgba(220, 220, 220, 0.3);
+    --bg-gradient-2: rgba(240, 240, 240, 0.3);
+    --bg-gradient-3: rgba(230, 230, 230, 0.3);
+    --bg-gradient-4: rgba(245, 245, 245, 0.3);
+    --bg-gradient-5: rgba(235, 235, 235, 0.3);
+    --bg-gradient-6: rgba(225, 225, 225, 0.3);
+  }
+}
+
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#grid {
+  width: 100%;
+  height: 110vh;
+  background-size: max(0.3125vw, 6px) max(0.3125vw, 6px);
+  background-position: center;
+  background-image: linear-gradient(
+      to right,
+      var(--grid-color) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  position: absolute;
+  opacity: 0.7;
+}
+
+.circle {
+  border-style: solid;
+  border-color: var(--shapes-color);
+  border-radius: 50%;
+  border-width: max(2px, 0.15vw);
+  position: absolute;
+}
+
+.line {
+  width: 125%;
+  position: relative;
+  margin: 7%;
+  border-style: solid;
+  border-color: var(--shapes-color);
+  border-width: max(1px, 0.05vw);
+  transform: rotate(45deg);
+}
+
+#c1 {
+  animation: moveC1 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes moveC1 {
+  0% {
+    left: -60vh;
+    top: -60vh;
+  }
+  33% {
+    left: -61vh;
+    top: -59vh;
+  }
+  66% {
+    left: -61vh;
+    top: -60vh;
+  }
+  100% {
+    left: -60vh;
+    top: -60vh;
+  }
+}
+
+.c2 {
+  animation: moveC2 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes moveC2 {
+  0% {
+    margin: -2%;
+  }
+  33% {
+    margin: -1.7%;
+  }
+  66% {
+    margin: -2.3%;
+  }
+  100% {
+    margin: -2%;
+  }
+}
+
+#l1 {
+  animation: movel1 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel1 {
+  0% {
+    left: 7%;
+    top: 62%;
+  }
+  33% {
+    left: 6.2%;
+    top: 62.5%;
+  }
+  66% {
+    left: 6.5%;
+    top: 63%;
+  }
+  100% {
+    left: 7%;
+    top: 62%;
+  }
+}
+
+#l2 {
+  animation: movel2 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel2 {
+  0% {
+    left: 18%;
+    top: 73%;
+  }
+  33% {
+    left: 18.5%;
+    top: 73.5%;
+  }
+  66% {
+    left: 17%;
+    top: 74%;
+  }
+  100% {
+    left: 18%;
+    top: 73%;
+  }
+}
+
+#l3 {
+  animation: movel3 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel3 {
+  0% {
+    left: 8%;
+    top: 63%;
+  }
+  33% {
+    left: 7.8%;
+    top: 63.2%;
+  }
+  66% {
+    left: 7.2%;
+    top: 62.5%;
+  }
+  100% {
+    left: 8%;
+    top: 63%;
+  }
+}
+
+#c3 {
+  animation: moveC3 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes moveC3 {
+  0% {
+    right: -60vh;
+    bottom: -60vh;
+  }
+  33% {
+    right: -59vh;
+    bottom: -59.5vh;
+  }
+  66% {
+    right: -58.8vh;
+    bottom: -59.2vh;
+  }
+  100% {
+    right: -60vh;
+    bottom: -60vh;
+  }
+}
+
+#l4 {
+  animation: movel4 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel4 {
+  0% {
+    left: -35%;
+    top: 20%;
+  }
+  33% {
+    left: -36%;
+    top: 21.5%;
+  }
+  66% {
+    left: -35.5%;
+    top: 21%;
+  }
+  100% {
+    left: -35%;
+    top: 20%;
+  }
+}
+
+#l5 {
+  animation: movel5 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel5 {
+  0% {
+    left: -56%;
+    top: -1%;
+  }
+  33% {
+    left: -56.4%;
+    top: -0.6%;
+  }
+  66% {
+    left: -57.1%;
+    top: 1.3%;
+  }
+  100% {
+    left: -56%;
+    top: -1%;
+  }
+}
+
+#l6 {
+  animation: movel6 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel6 {
+  0% {
+    left: -50%;
+    top: 5%;
+  }
+  33% {
+    left: -50.7%;
+    top: 5.6%;
+  }
+  66% {
+    left: -49.8%;
+    top: 6.2%;
+  }
+  100% {
+    left: -50%;
+    top: 5%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .circle,
+  .line {
+    animation: none !important;
+  }
+}
