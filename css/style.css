@@ -265,8 +265,7 @@ span {
   opacity: 0.9;
 }
 
-/* NieR UI decorations */
-.nier-ui-container {
+.ui-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -276,85 +275,85 @@ span {
   z-index: 2;
 }
 
-.nier-corner {
+.corner {
   position: absolute;
   width: 60px;
   height: 60px;
   border: 2px solid var(--accent-color);
 }
 
-.nier-corner.top-left {
+.corner.top-left {
   top: 15px;
   left: 15px;
   border-right: none;
   border-bottom: none;
 }
 
-.nier-corner.top-right {
+.corner.top-right {
   top: 15px;
   right: 15px;
   border-left: none;
   border-bottom: none;
 }
 
-.nier-corner.bottom-left {
+.corner.bottom-left {
   bottom: 15px;
   left: 15px;
   border-right: none;
   border-top: none;
 }
 
-.nier-corner.bottom-right {
+.corner.bottom-right {
   bottom: 15px;
   right: 15px;
   border-left: none;
   border-top: none;
 }
 
-.nier-edge {
+.edge {
   position: absolute;
   background-color: var(--accent-color);
   opacity: 0.3;
 }
 
-.nier-edge.top,
-.nier-edge.bottom {
+.edge.top,
+.edge.bottom {
   height: 1px;
   width: calc(100% - 140px);
   left: 70px;
 }
 
-.nier-edge.top {
+.edge.top {
   top: 15px;
 }
 
-.nier-edge.bottom {
+.edge.bottom {
   bottom: 15px;
 }
 
-.nier-edge.left,
-.nier-edge.right {
+.edge.left,
+.edge.right {
   width: 1px;
   height: calc(100% - 140px);
   top: 70px;
 }
 
-.nier-edge.left {
+.edge.left {
   left: 15px;
 }
 
-.nier-edge.right {
+.edge.right {
   right: 15px;
 }
 
 /* NieR-style list items */
-.nier-list-item {
+.list-item {
   position: relative;
   padding-left: 20px;
   list-style-type: none;
 }
 
-.nier-list-item::before {
+.list-item::before {
   content: "◈";
   position: absolute;
   left: 0;
@@ -362,13 +361,13 @@ span {
 }
 
 /* NieR-style nav items with centered bullets */
-.nier-nav-item {
+.nav-item {
   position: relative;
   padding-left: 20px;
   list-style-type: none;
 }
 
-.nier-nav-item::before {
+.nav-item::before {
   content: "◈";
   position: absolute;
   left: 0;
