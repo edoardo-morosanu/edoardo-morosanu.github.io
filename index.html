@@ -16,8 +16,20 @@
     <meta name="color-scheme" content="dark light" />
 
     <script src="js/router.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="js/nierTransition.js" defer></script>
   </head>
   <body>
+    <!-- Add NieR transition SVG container -->
+    <div id="nier-transition" style="display:none; position:fixed; z-index:1000; top:0; left:0; width:100%; height:100%; pointer-events:none;">
+      <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <g id="triangles" fill="var(--accent-color)" opacity="0"></g>
+        <g id="lines-left" class="transition-lines" stroke="var(--accent-color)" stroke-width="0.25" fill="none" style="display:none;"></g>
+        <g id="lines-right" class="transition-lines" stroke="var(--accent-color)" stroke-width="0.25" fill="none" style="display:none;"></g>
+      </svg>
+    </div>
+
     <!-- Background animation container -->
     <div class="background-container">
       <div id="grid"></div>
@@ -58,5 +70,6 @@
       </footer>
     </div>
     <script src="js/textAnimation.js" defer></script>
+    <script src="js/nierUI.js" defer></script>
   </body>
 </html>

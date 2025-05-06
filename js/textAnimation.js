@@ -1,5 +1,5 @@
 class TextAnimator {
-  static RANDOM_CHARS = "______!<>-\\/[]{}—=+*^?#";
+  static RANDOM_CHARS = "______!<>-\\/[]{}—=+*^?#︎▓▒░█▄▌▐◙◘■□●○¤¦•◊αβγδσω≡≈≠≤≥×¶§▂▃▅▆▇▉▊░▒▓├┤┴┬┼┌┐└┘│";
 
   constructor(element, options = {}) {
     this.element = element;
@@ -9,8 +9,8 @@ class TextAnimator {
     const {
       factor = 3,
       delay = 0,
-      maxMilsec = 80,
-      minMilsec = 20,
+      maxMilsec = 70,
+      minMilsec = 15,
       maxCharsToAnimate = 2,
       accelerationFactor = 0.15,
     } = options;
@@ -87,7 +87,9 @@ function animateTextElements() {
     const animator = new TextAnimator(element, {
       delay: index * 200,
       maxCharsToAnimate: 15,
-      accelerationFactor: 0.75,
+      accelerationFactor: 0.65,
+      flickerProbability: 0.03,
+      persistentGlitchProbability: 0.02
     });
     animator.start();
   });

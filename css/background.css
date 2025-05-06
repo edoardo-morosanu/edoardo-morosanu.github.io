@@ -269,3 +269,44 @@
     animation: none !important;
   }
 }
+
+/* Tablets / large phones */
+@media (max-width: 768px) {
+  #grid {
+    height: 150vh;
+    background-size: max(0.625vw, 8px) max(0.625vw, 8px);
+  }
+  /* scale the big circles down */
+  #c1,
+  #c3 {
+    width: 80vw !important;
+    height: 80vw !important;
+  }
+  #c1 {
+    top: -40vw !important;
+    left: -40vw !important;
+  }
+  #c3 {
+    bottom: -40vw !important;
+    right: -40vw !important;
+  }
+  /* tighten up the inner circle */
+  .circle.c2 {
+    margin: -1% !important;
+  }
+  /* narrower lines and smaller margins */
+  .line {
+    width: 100%;
+    margin: 5%;
+    border-width: max(0.5px, 0.1vw);
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  /* hide heavy shapes for performance and readability */
+  .background-container .circle,
+  .background-container .line {
+    display: none;
+  }
+}
