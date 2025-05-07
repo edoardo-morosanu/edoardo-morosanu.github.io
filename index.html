@@ -10,13 +10,37 @@
 
     <title>Edoardo A. Morosanu</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/normalize.css" type="text/css" />
     <link rel="stylesheet" href="css/style.css" type="text/css" />
+    <link rel="stylesheet" href="css/background.css" type="text/css" />
     <meta name="color-scheme" content="dark light" />
 
     <script src="js/router.js" defer></script>
   </head>
   <body>
+    <div class="background-container">
+      <div id="grid"></div>
+      <div id="c1" class="circle" style="height:120vh;width:120vh;left:-60vh;top:-60vh">
+        <div class="circle c2" style="height:100%;width:100%;margin:-2%;"></div>
+        <div id="l1" class="line" style="left:7%;top:62%;"></div>
+        <div id="l2" class="line" style="left:18%;top:73%;"></div>
+        <div id="l3" class="line" style="left:8%;top:63%;"></div>
+      </div>
+      <div class="scanner"></div>
+      <div class="noise"></div>
+
+      <div id="c3" class="circle" style="height:120vh;width:120vh;right:-60vh;bottom:-60vh">
+        <div class="circle c2" style="height:100%;width:100%;margin:2%;"></div>
+        <div id="l4" class="line" style="left:-35%;top:20%;"></div>
+        <div id="l5" class="line" style="left:-56%;top:-1%;"></div>
+        <div id="l6" class="line" style="left:-50%;top:5%;"></div>
+      </div>
+    </div>
+
     <div class="container">
       <header class="header">
         <a href="#home" class="logo" aria-label="Home">Edoardo M</a>
@@ -35,10 +59,10 @@
       </main>
 
       <footer class="footer">
-        <div class="divider" role="separator"></div>
-        &copy; 2024 Edoardo A. Morosanu
+        &copy; 2025 Edoardo A. Morosanu
       </footer>
     </div>
     <script src="js/textAnimation.js" defer></script>
+    <script src="js/nierUI.js" defer></script>
   </body>
 </html>

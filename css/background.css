@@ -1,0 +1,382 @@
+:root {
+  /* Animation */
+  --anim-time: 15s;
+  --anim-mode: cubic-bezier(0.33, 0.1, 0.67, 0.9);
+
+  /* Background elements */
+  --shapes-color: light-dark(#2c5d8f26, #67a2c926);
+  --grid-color: light-dark(#2c5d8f0d, #67a2c90d);
+  --shape-border-width: max(2px, 0.15vw);
+  --line-border-width: max(1px, 0.05vw);
+
+  /* Background gradients */
+  --bg-gradient-1: light-dark(#dcdcdc4d, #1d1e204d);
+  --bg-gradient-2: light-dark(#f0f0f04d, #28292c4d);
+  --bg-gradient-3: light-dark(#e6e6e64d, #32333c4d);
+  --bg-gradient-4: light-dark(#f5f5f54d, #2d2e314d);
+  --bg-gradient-5: light-dark(#ebebeb4d, #23242c4d);
+  --bg-gradient-6: light-dark(#e1e1e14d, #191a1d4d);
+
+  /* Grid settings */
+  --grid-size: max(0.3125vw, 6px);
+  --grid-opacity: 0.7;
+  --scan-line-opacity: 0.12;
+
+  /* NieR: Automata styling */
+  --nier-noise-opacity: 0.03;
+  --nier-vignette: light-dark(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.22));
+  --nier-highlight: light-dark(#2c5d8f15, #67a2c915);
+
+  /* Responsive breakpoints */
+  --tablet-breakpoint: 768px;
+  --mobile-breakpoint: 480px;
+}
+
+/* Container for background elements */
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* NieR-style scan lines */
+.background-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    var(--grid-color) 2px,
+    var(--grid-color) 4px
+  );
+  opacity: var(--scan-line-opacity);
+  pointer-events: none;
+}
+
+/* NieR-style vignette */
+.background-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    var(--nier-vignette) 100%
+  );
+  pointer-events: none;
+}
+
+/* Background grid */
+#grid {
+  width: 100%;
+  height: 110vh;
+  background-size: var(--grid-size) var(--grid-size);
+  background-position: center;
+  background-image: linear-gradient(
+      to right,
+      var(--grid-color) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  position: absolute;
+  opacity: var(--grid-opacity);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* NieR-style scanner effect */
+.scanner {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--shapes-color),
+    transparent
+  );
+  opacity: 0.4;
+  top: -100%;
+  animation: scannerMove 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes scannerMove {
+  0% {
+    top: -10%;
+  }
+  75% {
+    top: 110%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+/* Add noise texture for NieR effect */
+.noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: var(--nier-noise-opacity);
+  pointer-events: none;
+}
+
+/* Circle elements */
+.circle {
+  border-style: solid;
+  border-color: var(--shapes-color);
+  border-radius: 50%;
+  border-width: var(--shape-border-width);
+  position: absolute;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Line elements */
+.line {
+  width: 125%;
+  position: relative;
+  margin: 7%;
+  border-style: solid;
+  border-color: var(--shapes-color);
+  border-width: var(--line-border-width);
+  transform: rotate(45deg) translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Animation for top-left large circle */
+#c1 {
+  top: -60vh;
+  left: -60vh;
+  width: 120vh;
+  height: 120vh;
+  animation: moveC1 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes moveC1 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(-1vh, 1vh);
+  }
+  66% {
+    transform: translate(-1vh, 0);
+  }
+}
+
+/* Animations for lines */
+#l1 {
+  left: 7%;
+  top: 62%;
+  animation: movel1 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel1 {
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
+  }
+  33% {
+    transform: rotate(46deg) translate(-0.8%, 0.5%);
+  }
+  66% {
+    transform: rotate(44deg) translate(-0.5%, 1%);
+  }
+}
+
+#l2 {
+  left: 18%;
+  top: 73%;
+  animation: movel2 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel2 {
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
+  }
+  33% {
+    transform: rotate(45.5deg) translate(0.5%, 0.5%);
+  }
+  66% {
+    transform: rotate(44.2deg) translate(-1%, 1%);
+  }
+}
+
+#l3 {
+  left: 8%;
+  top: 63%;
+  animation: movel3 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel3 {
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
+  }
+  33% {
+    transform: rotate(44.7deg) translate(-0.2%, 0.2%);
+  }
+  66% {
+    transform: rotate(45.3deg) translate(-0.8%, -0.5%);
+  }
+}
+
+/* Animation for bottom-right large circle */
+#c3 {
+  right: -60vh;
+  bottom: -60vh;
+  width: 120vh;
+  height: 120vh;
+  animation: moveC3 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes moveC3 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(1vh, 0.5vh);
+  }
+  66% {
+    transform: translate(1.2vh, 0.8vh);
+  }
+}
+
+#l4 {
+  left: -35%;
+  top: 20%;
+  animation: movel4 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel4 {
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
+  }
+  33% {
+    transform: rotate(45.8deg) translate(-1%, 1.5%);
+  }
+  66% {
+    transform: rotate(44.5deg) translate(-0.5%, 1%);
+  }
+}
+
+#l5 {
+  left: -56%;
+  top: -1%;
+  animation: movel5 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel5 {
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
+  }
+  33% {
+    transform: rotate(44.3deg) translate(-0.4%, 0.4%);
+  }
+  66% {
+    transform: rotate(45.5deg) translate(-1.1%, 2.3%);
+  }
+}
+
+#l6 {
+  left: -50%;
+  top: 5%;
+  animation: movel6 var(--anim-time) var(--anim-mode) infinite;
+}
+@keyframes movel6 {
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
+  }
+  33% {
+    transform: rotate(45.7deg) translate(-0.7%, 0.6%);
+  }
+  66% {
+    transform: rotate(44.8deg) translate(0.2%, 1.2%);
+  }
+}
+
+/* Accessibility - reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .circle,
+  .line,
+  .scanner {
+    animation: none !important;
+  }
+}
+
+/* Responsive styles - Tablets / large phones */
+@media (max-width: 768px) {
+  #grid {
+    height: 150vh;
+    background-size: max(0.625vw, 8px) max(0.625vw, 8px);
+  }
+
+  /* Scale down large circles */
+  #c1,
+  #c3 {
+    width: 80vw !important;
+    height: 80vw !important;
+  }
+
+  #c1 {
+    top: -40vw !important;
+    left: -40vw !important;
+  }
+
+  #c3 {
+    bottom: -40vw !important;
+    right: -40vw !important;
+  }
+
+  #c3-inner {
+    bottom: -30vw !important;
+    right: -30vw !important;
+  }
+
+  /* Adjust lines */
+  .line {
+    width: 100%;
+    margin: 5%;
+    border-width: max(0.5px, 0.1vw);
+  }
+}
+
+/* Responsive styles - Small phones */
+@media (max-width: 480px) {
+  /* Improve performance on small screens by hiding complex elements */
+  .background-container .circle,
+  .background-container .line {
+    display: none;
+  }
+
+  /* Keep a simpler background */
+  #grid {
+    opacity: 0.4;
+    background-size: max(0.9vw, 10px) max(0.9vw, 10px);
+  }
+
+  /* Keep some NieR elements for style */
+  .scanner,
+  .noise {
+    display: block;
+  }
+}
