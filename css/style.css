@@ -1,19 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap");
-
 :root {
   /* Spacing */
   --spacing-sm: 10px;
   --spacing-md: 20px;
   --spacing-lg: 30px;
 
-  /* Colors */
-  --border-color: #333;
-  --bg-color: #1d1e20;
-  --text-color: #d4d4d4;
-  --accent-color: #67a2c9;
+  /* Positioning */
+  --corner-offset: 15px;
+  --corner-size: 60px;
+  --edge-offset: 70px;
+  --z-index-bg: 1;
+  --z-index-content: 2;
+
+  /* Colors with light-dark() */
+  --border-color: light-dark(#444, #333);
+  --bg-color: light-dark(#ffffff, #1d1e20);
+  --text-color: light-dark(#1d1e20, #d4d4d4);
+  --accent-color: light-dark(#2c5d8f, #67a2c9);
+  --accent-color-alpha: rgba(103, 162, 201, 0.3);
   --secondary-text: #888;
-  --button-bg-color: #fff;
-  --title-color: #a9a9a9;
+  --button-bg-color: light-dark(#454138, #fff);
+  --title-color: light-dark(#2a2a2a, #a9a9a9);
+  --icon-invert: light-dark(1, 0);
 
   /* Transitions */
   --transition-fast: 0.2s ease;
@@ -49,19 +56,24 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  z-index: 1; /* Make sure content stays above background */
-  background-color: transparent; /* Make container transparent */
+  z-index: var(--z-index-bg);
+  background-color: transparent;
 }
 
 /* Header and navigation */
+.header,
+.content,
+.footer {
+  position: relative;
+  z-index: var(--z-index-content);
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-sm);
   border-bottom: 1px solid var(--border-color);
-  position: relative;
-  z-index: 2; /* Ensure these elements are above the background */
 }
 
 .logo {
@@ -98,18 +110,14 @@ body {
   position: relative;
   z-index: 1;
   cursor: pointer;
-  transition-duration: 0.2s;
-  transition-property: color, background-color, box-shadow;
+  transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
 
 .menu a:before {
   content: "";
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
 }
 
 .menu a:after {
@@ -128,7 +136,7 @@ body {
   text-decoration: none;
   background-color: transparent;
   color: var(--bg-color);
-  box-shadow: 0.2em 0.2em 0.1em 0 rgba(103, 162, 201, 0.3);
+  box-shadow: 0.2em 0.2em 0.1em 0 var(--accent-color-alpha);
 }
 
 .menu a:hover:before {
@@ -164,9 +172,10 @@ body {
   padding: var(--spacing-sm);
 }
 
-.social-icons .theme-icon {
+.theme-icon {
   width: 32px;
   height: 32px;
+  filter: invert(var(--icon-invert));
 }
 
 /* Content areas */
@@ -174,8 +183,6 @@ body {
   margin-top: var(--spacing-lg);
   padding: 0 var(--spacing-md);
   flex: 1 0 auto;
-  position: relative;
-  z-index: 2; /* Ensure these elements are above the background */
 }
 
 .content.home {
@@ -223,12 +230,6 @@ a:hover {
   padding: var(--spacing-md);
   flex-shrink: 0;
   margin-top: auto;
-  position: relative;
-  z-index: 2; /* Ensure these elements are above the background */
-}
-
-.theme-icon {
-  filter: invert(var(--icon-invert, 0));
 }
 
 /* Optional: slight background for better readability */
@@ -239,18 +240,12 @@ a:hover {
 }
 
 /* Transitions and animations */
-.loading,
 .page-transition,
 .project-title,
 h1,
 p,
 span {
   transition: opacity var(--transition-normal);
-}
-
-.loading {
-  opacity: 0.7;
-  pointer-events: none;
 }
 
 .page-transition {
@@ -261,10 +256,6 @@ span {
   opacity: 1;
 }
 
-.animating {
-  opacity: 0.9;
-}
-
 .ui-container {
   position: fixed;
   top: 0;
@@ -272,108 +263,68 @@ span {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 2;
+  z-index: var(--z-index-content);
 }
 
+/* Consolidated corner styles */
 .corner {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: var(--corner-size);
+  height: var(--corner-size);
   border: 2px solid var(--accent-color);
 }
 
-.corner.top-left {
-  top: 15px;
-  left: 15px;
-  border-right: none;
-  border-bottom: none;
-}
-
+.corner.top-left,
 .corner.top-right {
-  top: 15px;
-  right: 15px;
+  top: var(--corner-offset);
+}
+
+.corner.bottom-left,
+.corner.bottom-right {
+  bottom: var(--corner-offset);
+}
+
+.corner.top-left,
+.corner.bottom-left {
+  left: var(--corner-offset);
+  border-right: none;
+}
+
+.corner.top-right,
+.corner.bottom-right {
+  right: var(--corner-offset);
   border-left: none;
+}
+
+.corner.top-left,
+.corner.top-right {
   border-bottom: none;
 }
 
-.corner.bottom-left {
-  bottom: 15px;
-  left: 15px;
-  border-right: none;
-  border-top: none;
-}
-
+.corner.bottom-left,
 .corner.bottom-right {
-  bottom: 15px;
-  right: 15px;
-  border-left: none;
   border-top: none;
-}
-
-.edge {
-  position: absolute;
-  background-color: var(--accent-color);
-  opacity: 0.3;
-}
-
-.edge.top,
-.edge.bottom {
-  height: 1px;
-  width: calc(100% - 140px);
-  left: 70px;
-}
-
-.edge.top {
-  top: 15px;
-}
-
-.edge.bottom {
-  bottom: 15px;
-}
-
-.edge.left,
-.edge.right {
-  width: 1px;
-  height: calc(100% - 140px);
-  top: 70px;
-}
-
-.edge.left {
-  left: 15px;
-}
-
-.edge.right {
-  right: 15px;
 }
 
 /* NieR-style list items */
-.list-item {
-  position: relative;
-  padding-left: 20px;
-  list-style-type: none;
-}
-
-.list-item::before {
-  content: "◈";
-  position: absolute;
-  left: 0;
-  color: var(--accent-color);
-}
-
-/* NieR-style nav items with centered bullets */
+.list-item,
 .nav-item {
   position: relative;
   padding-left: 20px;
   list-style-type: none;
 }
 
+.list-item::before,
 .nav-item::before {
   content: "◈";
   position: absolute;
   left: 0;
+  color: var(--accent-color);
+}
+
+.nav-item::before {
   top: 50%;
   transform: translateY(-50%);
-  color: var(--accent-color);
 }
 
 /* Ensure vertical alignment in flex contexts */
@@ -384,24 +335,6 @@ nav li a,
 }
 
 /* Media Queries */
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg-color: #ffffff;
-    --text-color: #1d1e20;
-    --accent-color: #2c5d8f;
-    --icon-invert: 1;
-    --bg-color-rgb: 255, 255, 255;
-    --button-bg-color: #454138;
-    --title-color: #2a2a2a;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --border-color: #444;
-  }
-}
-
 @media (max-width: 768px) {
   body {
     font-size: 18px;

@@ -1,30 +1,38 @@
 :root {
-  /* Background animation variables */
-  --shapes-color: rgba(103, 162, 201, 0.15);
-  --grid-color: rgba(103, 162, 201, 0.05);
-  --bg-gradient-1: rgba(29, 30, 32, 0.3);
-  --bg-gradient-2: rgba(40, 41, 44, 0.3);
-  --bg-gradient-3: rgba(50, 51, 54, 0.3);
-  --bg-gradient-4: rgba(45, 46, 49, 0.3);
-  --bg-gradient-5: rgba(35, 36, 39, 0.3);
-  --bg-gradient-6: rgba(25, 26, 29, 0.3);
+  /* Animation */
   --anim-time: 15s;
-  --anim-mode: cubic-bezier(0.5, 0.6, 0.7, 0.6);
+  --anim-mode: cubic-bezier(0.33, 0.1, 0.67, 0.9);
+
+  /* Background elements */
+  --shapes-color: light-dark(#2c5d8f26, #67a2c926);
+  --grid-color: light-dark(#2c5d8f0d, #67a2c90d);
+  --shape-border-width: max(2px, 0.15vw);
+  --line-border-width: max(1px, 0.05vw);
+
+  /* Background gradients */
+  --bg-gradient-1: light-dark(#dcdcdc4d, #1d1e204d);
+  --bg-gradient-2: light-dark(#f0f0f04d, #28292c4d);
+  --bg-gradient-3: light-dark(#e6e6e64d, #32333c4d);
+  --bg-gradient-4: light-dark(#f5f5f54d, #2d2e314d);
+  --bg-gradient-5: light-dark(#ebebeb4d, #23242c4d);
+  --bg-gradient-6: light-dark(#e1e1e14d, #191a1d4d);
+
+  /* Grid settings */
+  --grid-size: max(0.3125vw, 6px);
+  --grid-opacity: 0.7;
+  --scan-line-opacity: 0.12;
+
+  /* NieR: Automata styling */
+  --nier-noise-opacity: 0.03;
+  --nier-vignette: light-dark(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.22));
+  --nier-highlight: light-dark(#2c5d8f15, #67a2c915);
+
+  /* Responsive breakpoints */
+  --tablet-breakpoint: 768px;
+  --mobile-breakpoint: 480px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --shapes-color: rgba(44, 93, 143, 0.15);
-    --grid-color: rgba(44, 93, 143, 0.05);
-    --bg-gradient-1: rgba(220, 220, 220, 0.3);
-    --bg-gradient-2: rgba(240, 240, 240, 0.3);
-    --bg-gradient-3: rgba(230, 230, 230, 0.3);
-    --bg-gradient-4: rgba(245, 245, 245, 0.3);
-    --bg-gradient-5: rgba(235, 235, 235, 0.3);
-    --bg-gradient-6: rgba(225, 225, 225, 0.3);
-  }
-}
-
+/* Container for background elements */
 .background-container {
   position: fixed;
   top: 0;
@@ -36,10 +44,46 @@
   pointer-events: none;
 }
 
+/* NieR-style scan lines */
+.background-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    var(--grid-color) 2px,
+    var(--grid-color) 4px
+  );
+  opacity: var(--scan-line-opacity);
+  pointer-events: none;
+}
+
+/* NieR-style vignette */
+.background-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    var(--nier-vignette) 100%
+  );
+  pointer-events: none;
+}
+
+/* Background grid */
 #grid {
   width: 100%;
   height: 110vh;
-  background-size: max(0.3125vw, 6px) max(0.3125vw, 6px);
+  background-size: var(--grid-size) var(--grid-size);
   background-position: center;
   background-image: linear-gradient(
       to right,
@@ -48,253 +92,267 @@
     ),
     linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
   position: absolute;
-  opacity: 0.7;
+  opacity: var(--grid-opacity);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
+/* NieR-style scanner effect */
+.scanner {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--shapes-color),
+    transparent
+  );
+  opacity: 0.4;
+  top: -100%;
+  animation: scannerMove 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes scannerMove {
+  0% {
+    top: -10%;
+  }
+  75% {
+    top: 110%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+/* Add noise texture for NieR effect */
+.noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: var(--nier-noise-opacity);
+  pointer-events: none;
+}
+
+/* Circle elements */
 .circle {
   border-style: solid;
   border-color: var(--shapes-color);
   border-radius: 50%;
-  border-width: max(2px, 0.15vw);
+  border-width: var(--shape-border-width);
   position: absolute;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
+/* Line elements */
 .line {
   width: 125%;
   position: relative;
   margin: 7%;
   border-style: solid;
   border-color: var(--shapes-color);
-  border-width: max(1px, 0.05vw);
-  transform: rotate(45deg);
+  border-width: var(--line-border-width);
+  transform: rotate(45deg) translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
+/* Animation for top-left large circle */
 #c1 {
+  top: -60vh;
+  left: -60vh;
+  width: 120vh;
+  height: 120vh;
   animation: moveC1 var(--anim-time) var(--anim-mode) infinite;
 }
 @keyframes moveC1 {
-  0% {
-    left: -60vh;
-    top: -60vh;
+  0%,
+  100% {
+    transform: translate(0, 0);
   }
   33% {
-    left: -61vh;
-    top: -59vh;
+    transform: translate(-1vh, 1vh);
   }
   66% {
-    left: -61vh;
-    top: -60vh;
-  }
-  100% {
-    left: -60vh;
-    top: -60vh;
+    transform: translate(-1vh, 0);
   }
 }
 
-.c2 {
-  animation: moveC2 var(--anim-time) var(--anim-mode) infinite;
-}
-@keyframes moveC2 {
-  0% {
-    margin: -2%;
-  }
-  33% {
-    margin: -1.7%;
-  }
-  66% {
-    margin: -2.3%;
-  }
-  100% {
-    margin: -2%;
-  }
-}
-
+/* Animations for lines */
 #l1 {
+  left: 7%;
+  top: 62%;
   animation: movel1 var(--anim-time) var(--anim-mode) infinite;
 }
 @keyframes movel1 {
-  0% {
-    left: 7%;
-    top: 62%;
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
   }
   33% {
-    left: 6.2%;
-    top: 62.5%;
+    transform: rotate(46deg) translate(-0.8%, 0.5%);
   }
   66% {
-    left: 6.5%;
-    top: 63%;
-  }
-  100% {
-    left: 7%;
-    top: 62%;
+    transform: rotate(44deg) translate(-0.5%, 1%);
   }
 }
 
 #l2 {
+  left: 18%;
+  top: 73%;
   animation: movel2 var(--anim-time) var(--anim-mode) infinite;
 }
 @keyframes movel2 {
-  0% {
-    left: 18%;
-    top: 73%;
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
   }
   33% {
-    left: 18.5%;
-    top: 73.5%;
+    transform: rotate(45.5deg) translate(0.5%, 0.5%);
   }
   66% {
-    left: 17%;
-    top: 74%;
-  }
-  100% {
-    left: 18%;
-    top: 73%;
+    transform: rotate(44.2deg) translate(-1%, 1%);
   }
 }
 
 #l3 {
+  left: 8%;
+  top: 63%;
   animation: movel3 var(--anim-time) var(--anim-mode) infinite;
 }
 @keyframes movel3 {
-  0% {
-    left: 8%;
-    top: 63%;
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
   }
   33% {
-    left: 7.8%;
-    top: 63.2%;
+    transform: rotate(44.7deg) translate(-0.2%, 0.2%);
   }
   66% {
-    left: 7.2%;
-    top: 62.5%;
-  }
-  100% {
-    left: 8%;
-    top: 63%;
+    transform: rotate(45.3deg) translate(-0.8%, -0.5%);
   }
 }
 
+/* Animation for bottom-right large circle */
 #c3 {
+  right: -60vh;
+  bottom: -60vh;
+  width: 120vh;
+  height: 120vh;
   animation: moveC3 var(--anim-time) var(--anim-mode) infinite;
 }
 @keyframes moveC3 {
-  0% {
-    right: -60vh;
-    bottom: -60vh;
+  0%,
+  100% {
+    transform: translate(0, 0);
   }
   33% {
-    right: -59vh;
-    bottom: -59.5vh;
+    transform: translate(1vh, 0.5vh);
   }
   66% {
-    right: -58.8vh;
-    bottom: -59.2vh;
-  }
-  100% {
-    right: -60vh;
-    bottom: -60vh;
+    transform: translate(1.2vh, 0.8vh);
   }
 }
 
 #l4 {
+  left: -35%;
+  top: 20%;
   animation: movel4 var(--anim-time) var(--anim-mode) infinite;
 }
 @keyframes movel4 {
-  0% {
-    left: -35%;
-    top: 20%;
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
   }
   33% {
-    left: -36%;
-    top: 21.5%;
+    transform: rotate(45.8deg) translate(-1%, 1.5%);
   }
   66% {
-    left: -35.5%;
-    top: 21%;
-  }
-  100% {
-    left: -35%;
-    top: 20%;
+    transform: rotate(44.5deg) translate(-0.5%, 1%);
   }
 }
 
 #l5 {
+  left: -56%;
+  top: -1%;
   animation: movel5 var(--anim-time) var(--anim-mode) infinite;
 }
 @keyframes movel5 {
-  0% {
-    left: -56%;
-    top: -1%;
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
   }
   33% {
-    left: -56.4%;
-    top: -0.6%;
+    transform: rotate(44.3deg) translate(-0.4%, 0.4%);
   }
   66% {
-    left: -57.1%;
-    top: 1.3%;
-  }
-  100% {
-    left: -56%;
-    top: -1%;
+    transform: rotate(45.5deg) translate(-1.1%, 2.3%);
   }
 }
 
 #l6 {
+  left: -50%;
+  top: 5%;
   animation: movel6 var(--anim-time) var(--anim-mode) infinite;
 }
 @keyframes movel6 {
-  0% {
-    left: -50%;
-    top: 5%;
+  0%,
+  100% {
+    transform: rotate(45deg) translate(0, 0);
   }
   33% {
-    left: -50.7%;
-    top: 5.6%;
+    transform: rotate(45.7deg) translate(-0.7%, 0.6%);
   }
   66% {
-    left: -49.8%;
-    top: 6.2%;
-  }
-  100% {
-    left: -50%;
-    top: 5%;
+    transform: rotate(44.8deg) translate(0.2%, 1.2%);
   }
 }
 
+/* Accessibility - reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .circle,
-  .line {
+  .line,
+  .scanner {
     animation: none !important;
   }
 }
 
-/* Tablets / large phones */
+/* Responsive styles - Tablets / large phones */
 @media (max-width: 768px) {
   #grid {
     height: 150vh;
     background-size: max(0.625vw, 8px) max(0.625vw, 8px);
   }
-  /* scale the big circles down */
+
+  /* Scale down large circles */
   #c1,
   #c3 {
     width: 80vw !important;
     height: 80vw !important;
   }
+
   #c1 {
     top: -40vw !important;
     left: -40vw !important;
   }
+
   #c3 {
     bottom: -40vw !important;
     right: -40vw !important;
   }
-  /* tighten up the inner circle */
-  .circle.c2 {
-    margin: -1% !important;
+
+  #c3-inner {
+    bottom: -30vw !important;
+    right: -30vw !important;
   }
-  /* narrower lines and smaller margins */
+
+  /* Adjust lines */
   .line {
     width: 100%;
     margin: 5%;
@@ -302,11 +360,23 @@
   }
 }
 
-/* Small phones */
+/* Responsive styles - Small phones */
 @media (max-width: 480px) {
-  /* hide heavy shapes for performance and readability */
+  /* Improve performance on small screens by hiding complex elements */
   .background-container .circle,
   .background-container .line {
     display: none;
+  }
+
+  /* Keep a simpler background */
+  #grid {
+    opacity: 0.4;
+    background-size: max(0.9vw, 10px) max(0.9vw, 10px);
+  }
+
+  /* Keep some NieR elements for style */
+  .scanner,
+  .noise {
+    display: block;
   }
 }

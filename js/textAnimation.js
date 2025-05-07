@@ -85,11 +85,9 @@ function animateTextElements() {
 
   elementsToAnimate.forEach((element, index) => {
     const animator = new TextAnimator(element, {
-      delay: index * 200,
-      maxCharsToAnimate: 15,
-      accelerationFactor: 0.65,
-      flickerProbability: 0.03,
-      persistentGlitchProbability: 0.02
+      delay: index * 250,
+      maxCharsToAnimate: 100,
+      accelerationFactor: 0.75
     });
     animator.start();
   });

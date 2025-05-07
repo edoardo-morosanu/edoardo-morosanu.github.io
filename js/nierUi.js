@@ -9,14 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     uiContainer.appendChild(cornerElement);
   }
 
-  // Edge decorations
-  const edges = ['top', 'right', 'bottom', 'left'];
-  for (const edge of edges) {
-    const edgeElement = document.createElement('div');
-    edgeElement.className = `ui-edge ${edge}`;
-    uiContainer.appendChild(edgeElement);
-  }
-
   document.body.appendChild(uiContainer);
 
   // Decorative bullet points
