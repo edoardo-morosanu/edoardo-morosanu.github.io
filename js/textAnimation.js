@@ -1,5 +1,6 @@
 class TextAnimator {
-  static RANDOM_CHARS = "______!<>-\\/[]{}—=+*^?#︎▓▒░█▄▌▐◙◘■□●○¤¦•◊αβγδσω≡≈≠≤≥×¶§▂▃▅▆▇▉▊░▒▓├┤┴┬┼┌┐└┘│";
+  static RANDOM_CHARS =
+    "______!<>-\\/[]{}—=+*^?#︎▓▒░█▄▌▐◙◘■□●○¤¦•◊αβγδσω≡≈≠≤≥×¶§▂▃▅▆▇▉▊░▒▓├┤┴┬┼┌┐└┘│";
 
   constructor(element, options = {}) {
     this.element = element;
@@ -79,15 +80,13 @@ class TextAnimator {
 const visitedPages = new Set();
 
 function animateTextElements() {
-  const elementsToAnimate = document.querySelectorAll(
-    "h1"
-  );
+  const elementsToAnimate = document.querySelectorAll("h1");
 
   elementsToAnimate.forEach((element, index) => {
     const animator = new TextAnimator(element, {
       delay: index * 250,
-      maxCharsToAnimate: 100,
-      accelerationFactor: 0.75
+      maxCharsToAnimate: 4,
+      accelerationFactor: 0.45,
     });
     animator.start();
   });

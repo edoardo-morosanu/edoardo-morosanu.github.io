@@ -360,23 +360,50 @@
   }
 }
 
-/* Responsive styles - Small phones */
+/* Better Performance for mobile */
 @media (max-width: 480px) {
-  /* Improve performance on small screens by hiding complex elements */
   .background-container .circle,
   .background-container .line {
     display: none;
   }
 
-  /* Keep a simpler background */
   #grid {
-    opacity: 0.4;
-    background-size: max(0.9vw, 10px) max(0.9vw, 10px);
+    opacity: 0.3;
+    background-size: max(1.2vw, 12px) max(1.2vw, 12px);
+    will-change: auto;
   }
 
-  /* Keep some NieR elements for style */
-  .scanner,
-  .noise {
+  .scanner {
+    animation-duration: 15s;
+    height: 2px;
     display: block;
   }
+
+  .noise {
+    opacity: 0.02;
+    display: block;
+  }
+  
+  .background-container::before {
+    opacity: 0.08;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 4px,
+      var(--grid-color) 4px,
+      var(--grid-color) 8px
+    );
+  }
+}
+
+.mobile-optimized .background-container {
+  transform: translateZ(0);
+}
+
+.mobile-optimized #grid {
+  background-size: max(1.5vw, 15px) max(1.5vw, 15px);
+}
+
+.mobile-optimized .noise {
+  display: none;
 }
