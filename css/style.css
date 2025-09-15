@@ -175,7 +175,24 @@ body {
 .theme-icon {
   width: 32px;
   height: 32px;
-  filter: invert(var(--icon-invert));
+}
+
+@media (prefers-color-scheme: light) {
+  .theme-icon.light-icon {
+    display: none;
+  }
+  .theme-icon.dark-icon {
+    display: block;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .theme-icon.light-icon {
+    display: block;
+  }
+  .theme-icon.dark-icon {
+    display: none;
+  }
 }
 
 /* Content areas */
